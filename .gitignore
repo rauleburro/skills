@@ -1,0 +1,9 @@
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Skill workspace dirs from skill-creator iterations
+*-workspace/
