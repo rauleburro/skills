@@ -11,6 +11,7 @@ Maintained by [@rauleburro](https://github.com/rauleburro).
 | Skill | Description | Install command |
 |-------|-------------|-----------------|
 | [`apple-mail`](./skills/apple-mail) | Send, read, search, reply to, archive, and delete emails through Apple Mail on macOS. Supports attachments and requires explicit user confirmation before destructive or outbound actions. | `npx skills add rauleburro/skills@apple-mail` |
+| [`research`](./skills/research) | Focused technical deep-dive using 3 parallel agents (codebase + web). Produces a consolidated report and persistent notes with minimal token overhead. | `npx skills add rauleburro/skills@research` |
 
 ---
 
