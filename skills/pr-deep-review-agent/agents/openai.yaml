@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Deep Review Agent"
+  short_description: "Launch a fresh PR review agent"
+  default_prompt: "Use $pr-deep-review-agent to launch a fresh agent that deeply reviews the current PR against code, local docs, and official docs."

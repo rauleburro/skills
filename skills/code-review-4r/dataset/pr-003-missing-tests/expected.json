@@ -1,0 +1,7 @@
+{
+  "description": "New billing logic (total_due) ships with no test and no handling of missing/None amounts — reliability gap.",
+  "expected_verdict": false,
+  "findings": [
+    { "r": "Reliability", "severity": "major", "matcher": "test" }
+  ]
+}

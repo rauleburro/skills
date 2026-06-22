@@ -1,0 +1,10 @@
+{
+  "description": "The video's canonical example: a search() that (Risk) interpolates query/ttl_boost_flow straight into SQL, (Readability) uses 8.0 as a magic number, (Reliability) fetchall()s every row with no limit, and (Resilience) calls a remote API with no timeout. Exercises all four R gates at once.",
+  "expected_verdict": false,
+  "findings": [
+    { "r": "Risk",        "severity": "blocking", "matcher": "sql" },
+    { "r": "Readability", "severity": "minor",    "matcher": "magic" },
+    { "r": "Reliability", "severity": "major",    "matcher": "limit" },
+    { "r": "Resilience",  "severity": "major",    "matcher": "timeout" }
+  ]
+}

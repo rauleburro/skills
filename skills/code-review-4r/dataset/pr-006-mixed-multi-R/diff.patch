@@ -1,0 +1,18 @@
+diff --git a/src/search.py b/src/search.py
+new file mode 100644
+index 0000000..7777777
+--- /dev/null
++++ b/src/search.py
+@@ -0,0 +1,12 @@
++import sqlite3
++import requests
++
++
++def search(db, query, ttl_boost_flow=8.0):
++    sql = (
++        f"SELECT id, title, bm25(docs) AS score FROM docs "
++        f"WHERE docs MATCH '{query}' ORDER BY score * {ttl_boost_flow} DESC"
++    )
++    rows = db.execute(sql).fetchall()
++    enriched = requests.get("https://api.example.com/enrich").json()
++    return rows, enriched

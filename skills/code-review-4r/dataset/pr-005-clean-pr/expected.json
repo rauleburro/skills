@@ -1,0 +1,5 @@
+{
+  "description": "Small, well-named, documented, fully-tested pure function. 9/5 and 32 are the definitional constants of the conversion, not magic numbers. Should approve with zero blocking/major findings — guards against false positives.",
+  "expected_verdict": true,
+  "findings": []
+}

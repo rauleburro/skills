@@ -7,3 +7,7 @@
 
 # Skill workspace dirs from skill-creator iterations
 *-workspace/
+
+# Python
+__pycache__/
+*.pyc
