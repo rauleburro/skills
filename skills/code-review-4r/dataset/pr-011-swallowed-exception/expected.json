@@ -1,0 +1,8 @@
+{
+  "description": "A bare `except Exception: pass` swallows payment-gateway errors and then reports success — a failed charge looks like a paid order. Reliability/major (error handling) with a Risk angle (silent data/money loss).",
+  "expected_verdict": false,
+  "findings": [
+    { "r": "Reliability", "severity": "major", "matcher": "except" }
+  ],
+  "forbidden": []
+}

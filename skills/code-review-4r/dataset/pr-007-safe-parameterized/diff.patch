@@ -1,0 +1,30 @@
+diff --git a/src/users.py b/src/users.py
+new file mode 100644
+index 0000000..7a7a7a7
+--- /dev/null
++++ b/src/users.py
+@@ -0,0 +1,4 @@
++def get_user(conn, user_id):
++    """Look up a single user by id using a parameterized query."""
++    return conn.execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
++
+diff --git a/test/test_users.py b/test/test_users.py
+new file mode 100644
+index 0000000..7b7b7b7
+--- /dev/null
++++ b/test/test_users.py
+@@ -0,0 +1,12 @@
++import sqlite3
++from src.users import get_user
++
++
++def test_get_user_returns_matching_row():
++    conn = sqlite3.connect(":memory:")
++    conn.execute("CREATE TABLE users (id INTEGER, name TEXT)")
++    conn.execute("INSERT INTO users VALUES (1, 'Ada')")
++    assert get_user(conn, 1)[1] == "Ada"
++
++def test_get_user_missing_returns_none():
++    conn = sqlite3.connect(":memory:")
++    conn.execute("CREATE TABLE users (id INTEGER, name TEXT)")
++    assert get_user(conn, 99) is None

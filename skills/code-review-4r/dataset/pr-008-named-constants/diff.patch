@@ -1,24 +1,27 @@
 diff --git a/src/ranking.py b/src/ranking.py
 new file mode 100644
-index 0000000..2222222
+index 0000000..8a8a8a8
 --- /dev/null
 +++ b/src/ranking.py
-@@ -0,0 +1,4 @@
+@@ -0,0 +1,8 @@
++# Weights tuned on the 2024 relevance eval set; relevance dominates recency.
++RELEVANCE_WEIGHT = 8.0
++RECENCY_WEIGHT = 1.5
++
++
 +def rank(score, recency):
 +    """Combine relevance score and recency into a single ranking value."""
-+    return score * 8.0 + recency * 1.5
-+
++    return score * RELEVANCE_WEIGHT + recency * RECENCY_WEIGHT
 diff --git a/test/test_ranking.py b/test/test_ranking.py
 new file mode 100644
-index 0000000..2a2a2a2
+index 0000000..8b8b8b8
 --- /dev/null
 +++ b/test/test_ranking.py
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,7 @@
 +from src.ranking import rank
 +
 +
 +def test_rank_combines_relevance_and_recency():
 +    assert rank(1.0, 0.0) == 8.0
 +    assert rank(0.0, 1.0) == 1.5
-+    assert rank(1.0, 1.0) == 9.5
 +    assert rank(0.0, 0.0) == 0.0

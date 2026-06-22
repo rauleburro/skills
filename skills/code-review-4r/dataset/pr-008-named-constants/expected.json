@@ -1,0 +1,8 @@
+{
+  "description": "PRECISION TRAP. The same 8.0/1.5 weights as pr-002, but now extracted into documented named constants and tested. There is no magic number anymore. A reviewer that still flags 'magic number' is producing a false positive.",
+  "expected_verdict": true,
+  "findings": [],
+  "forbidden": [
+    { "r": "Readability", "matcher": "magic" }
+  ]
+}
