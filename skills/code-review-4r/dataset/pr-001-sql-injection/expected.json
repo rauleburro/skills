@@ -1,0 +1,7 @@
+{
+  "description": "User lookup builds SQL by %-formatting raw user_id into the query string — SQL injection.",
+  "expected_verdict": false,
+  "findings": [
+    { "r": "Risk", "severity": "blocking", "matcher": "sql" }
+  ]
+}

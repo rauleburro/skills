@@ -1,0 +1,25 @@
+diff --git a/src/temperature.py b/src/temperature.py
+new file mode 100644
+index 0000000..5555555
+--- /dev/null
++++ b/src/temperature.py
+@@ -0,0 +1,5 @@
++def celsius_to_fahrenheit(celsius: float) -> float:
++    """Convert a temperature from Celsius to Fahrenheit."""
++    return celsius * 9 / 5 + 32
++
++
+diff --git a/test/test_temperature.py b/test/test_temperature.py
+new file mode 100644
+index 0000000..6666666
+--- /dev/null
++++ b/test/test_temperature.py
+@@ -0,0 +1,8 @@
++from src.temperature import celsius_to_fahrenheit
++
++
++def test_celsius_to_fahrenheit():
++    assert celsius_to_fahrenheit(0) == 32
++    assert celsius_to_fahrenheit(100) == 212
++    assert celsius_to_fahrenheit(-40) == -40  # the crossover point
++    assert celsius_to_fahrenheit(37) == 98.6

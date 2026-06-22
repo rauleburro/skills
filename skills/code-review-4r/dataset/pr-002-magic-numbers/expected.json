@@ -1,0 +1,7 @@
+{
+  "description": "Ranking weights 8.0 and 1.5 are unexplained magic numbers. A minor readability finding — reported but does NOT block approval (validates the minor-doesn't-block rule).",
+  "expected_verdict": true,
+  "findings": [
+    { "r": "Readability", "severity": "minor", "matcher": "magic" }
+  ]
+}

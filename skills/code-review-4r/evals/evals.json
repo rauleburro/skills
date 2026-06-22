@@ -1,0 +1,41 @@
+{
+  "skill_name": "code-review-4r",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Terminé la PR del feature de búsqueda, ¿me la revisás antes de que la mire el senior?",
+      "expected_output": "Skill triggers; collects the current branch diff, runs the Opus reviewer with the 4R rubric, loops review→plan→fix→re-review with Sonnet implementers (auto-commit per iteration, no push), and posts a summary comment on the PR.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Run a 4R code review on PR #214 and fix whatever you can before I merge.",
+      "expected_output": "Skill triggers in --pr mode: gh pr checkout 214, review against the rubric, autonomous fix loop, final GitHub comment summarizing reported + fixed findings.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "this branch is done, can you check it for security and missing tests before merge?",
+      "expected_output": "Skill triggers; the Risk and Reliability gates of the rubric cover security and tests; runs the loop and reports.",
+      "files": []
+    }
+  ],
+  "trigger_evals": [
+    { "query": "Terminé la PR del feature de búsqueda, ¿me la revisás con 4R antes de mergear?", "should_trigger": true },
+    { "query": "review my PR before the senior looks at it, fix the small stuff", "should_trigger": true },
+    { "query": "corré un code review autónomo sobre el branch feat/AIMA-1203 y dejá un comentario en el PR", "should_trigger": true },
+    { "query": "Run a 4R review on PR #214 and auto-fix what you can", "should_trigger": true },
+    { "query": "this branch is done, check it for security holes and missing tests before merge", "should_trigger": true },
+    { "query": "valida este branch antes de merge, quiero que el review humano vaya solo por lo importante", "should_trigger": true },
+    { "query": "can you look over the diff I just pushed and fix any timeout/retry issues you find?", "should_trigger": true },
+    { "query": "do a thorough review of pr 88, loop until it's clean", "should_trigger": true },
+    { "query": "open a PR for my current branch against develop", "should_trigger": false },
+    { "query": "explain what the 4R framework is and why 200-400 lines is the ideal PR size", "should_trigger": false },
+    { "query": "review my essay draft for clarity and tone", "should_trigger": false },
+    { "query": "what does this regex do and is it efficient?", "should_trigger": false },
+    { "query": "write unit tests for the search() function", "should_trigger": false },
+    { "query": "the CI security scan is failing on PR #214, why?", "should_trigger": false },
+    { "query": "merge PR #214 into develop", "should_trigger": false },
+    { "query": "summarize the changes in the last 5 commits", "should_trigger": false }
+  ]
+}

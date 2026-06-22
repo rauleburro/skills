@@ -1,0 +1,7 @@
+{
+  "description": "Remote HTTP call has no timeout — a slow upstream blocks the caller indefinitely and can cascade into an outage.",
+  "expected_verdict": false,
+  "findings": [
+    { "r": "Resilience", "severity": "major", "matcher": "timeout" }
+  ]
+}
