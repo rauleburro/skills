@@ -1,0 +1,14 @@
+diff --git a/src/client.py b/src/client.py
+new file mode 100644
+index 0000000..a0a0a0a
+--- /dev/null
++++ b/src/client.py
+@@ -0,0 +1,7 @@
++import requests
++
++API_KEY = "sk-live-9f8c2a1b7e4d6f0a3c5e8b1d2f4a6c9e"
++
++
++def call(path):
++    return requests.get("https://api.example.com" + path,
++                        headers={"Authorization": f"Bearer {API_KEY}"}, timeout=5).json()

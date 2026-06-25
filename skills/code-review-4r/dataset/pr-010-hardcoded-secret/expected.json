@@ -1,0 +1,8 @@
+{
+  "description": "A live API key is hardcoded in source (and thus committed to git history). Classic Risk/blocking — secrets must come from env/secret store, not literals.",
+  "expected_verdict": false,
+  "findings": [
+    { "r": "Risk", "severity": "blocking", "matcher": "key" }
+  ],
+  "forbidden": []
+}

@@ -1,0 +1,9 @@
+{
+  "description": "PRECISION TRAP. A SQL query that uses bound parameters (?, tuple) — the safe, correct pattern. Single-row fetchone, with edge-case tests. A reviewer that cries 'SQL injection' here is producing a false positive.",
+  "expected_verdict": true,
+  "findings": [],
+  "forbidden": [
+    { "r": "Risk", "matcher": "inject" },
+    { "r": "Risk", "matcher": "sql" }
+  ]
+}

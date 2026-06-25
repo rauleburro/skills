@@ -1,0 +1,9 @@
+{
+  "description": "PRECISION TRAP. The same remote call as pr-004, but now with a bounded timeout, retry/backoff, raise_for_status, and a test asserting the timeout is passed. Resilience is handled. A reviewer that flags 'no timeout' or 'no retry' here is producing a false positive.",
+  "expected_verdict": true,
+  "findings": [],
+  "forbidden": [
+    { "r": "Resilience", "matcher": "timeout" },
+    { "r": "Resilience", "matcher": "retry" }
+  ]
+}
