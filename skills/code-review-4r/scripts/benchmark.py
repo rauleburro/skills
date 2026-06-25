@@ -125,13 +125,40 @@ def mean_std(xs):
 
 def aggregate(per_run, fixtures, runs):
     """per_run: list of (fixture_name, run_idx, score dict). Returns the condition summary."""
-    recalls = [s["recall"] for _, _, s in per_run if s["recall"] is not None]
-    verdicts = [1.0 if s["verdict_ok"] else 0.0 for _, _, s in per_run]
-    approve_runs = [s for _, _, s in per_run if s["is_approve_case"]]
-    fps = [1.0 if s["false_positive"] else 0.0 for s in approve_runs]
-    forbids = [1.0 if s["forbidden_hit"] else 0.0 for n, _, s in per_run
-               if next(f for f in fixtures if f["name"] == n).get("forbidden")]
-    parsed = [1.0 if s["parsed"] else 0.0 for _, _, s in per_run]
+    fixtures_by_name = {f["name"]: f for f in fixtures}
+
+    # First reduce each benchmark repetition to one suite-level value. Only then compute
+    # mean/stddev across K runs, so a metric's variance reflects run-to-run instability of
+    # the whole suite rather than mixing fixture-level and run-level samples.
+    suite_recalls = []
+    suite_verdicts = []
+    suite_fps = []
+    suite_forbids = []
+    suite_parsed = []
+    for run_idx in range(runs):
+        run_scores = [(n, s) for n, r, s in per_run if r == run_idx]
+        if not run_scores:
+            continue
+
+        expected_findings = sum(len(fixtures_by_name[n].get("findings", [])) for n, _ in run_scores)
+        caught_findings = sum(s["recall"] * len(fixtures_by_name[n].get("findings", []))
+                              for n, s in run_scores if s["recall"] is not None)
+        suite_recalls.append(caught_findings / expected_findings if expected_findings else None)
+
+        suite_verdicts.append(sum(1.0 if s["verdict_ok"] else 0.0 for _, s in run_scores) /
+                              len(run_scores))
+
+        approve_scores = [s for _, s in run_scores if s["is_approve_case"]]
+        suite_fps.append(sum(1.0 if s["false_positive"] else 0.0 for s in approve_scores) /
+                         len(approve_scores) if approve_scores else None)
+
+        forbidden_scores = [(n, s) for n, s in run_scores if fixtures_by_name[n].get("forbidden")]
+        suite_forbids.append(sum(1.0 if s["forbidden_hit"] else 0.0
+                                 for _, s in forbidden_scores) / len(forbidden_scores)
+                             if forbidden_scores else None)
+
+        suite_parsed.append(sum(1.0 if s["parsed"] else 0.0 for _, s in run_scores) /
+                            len(run_scores))
 
     # verdict consistency: per fixture, agreement with that fixture's modal verdict.
     cons = []
@@ -141,13 +168,19 @@ def aggregate(per_run, fixtures, runs):
             modal = max(set(verds), key=verds.count)
             cons.append(verds.count(modal) / len(verds))
 
-    rec_m, rec_s = mean_std(recalls)
+    rec_m, rec_s = mean_std(suite_recalls)
+    fp_m, fp_s = mean_std(suite_fps)
+    forbid_m, forbid_s = mean_std(suite_forbids)
+    verdict_m, verdict_s = mean_std(suite_verdicts)
+    parsed_m, _ = mean_std(suite_parsed)
     return {
         "recall": {"mean": rec_m, "std": rec_s},
-        "verdict_accuracy": {"mean": mean_std(verdicts)[0], "std": mean_std(verdicts)[1]},
-        "false_positive_rate": {"mean": mean_std(fps)[0], "std": mean_std(fps)[1], "n_cases": len(approve_runs)},
-        "forbidden_hit_rate": {"mean": mean_std(forbids)[0] if forbids else None, "n_cases": len(forbids)},
-        "parse_rate": {"mean": mean_std(parsed)[0]},
+        "verdict_accuracy": {"mean": verdict_m, "std": verdict_s},
+        "false_positive_rate": {"mean": fp_m, "std": fp_s,
+                                "n_cases": sum(1 for f in fixtures if f.get("expected_verdict"))},
+        "forbidden_hit_rate": {"mean": forbid_m, "std": forbid_s,
+                               "n_cases": sum(1 for f in fixtures if f.get("forbidden"))},
+        "parse_rate": {"mean": parsed_m},
         "verdict_consistency": {"mean": (statistics.mean(cons) if cons else None)},
     }
 
@@ -245,7 +278,6 @@ def render_md(bench, fixtures) -> str:
     lines += ["", "## Per-fixture verdict (modal across runs)", "",
               "| Fixture | expected | " + " | ".join(conds) + " |",
               "|---|---|" + "---|" * len(conds)]
-    exp_by = {f["name"]: f for f in fixtures}
     for f in fixtures:
         exp_v = "approve" if f.get("expected_verdict") else "reject"
         cells = []
