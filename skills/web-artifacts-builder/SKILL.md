@@ -14,6 +14,7 @@ This is a Bellbird-customized derivative of Anthropic's `web-artifacts-builder` 
 2. Build the artifact using the Bellbird Warm Tech system below.
 3. Run `pnpm build` and bundle it with `scripts/bundle-artifact.sh`.
 4. Share the resulting `bundle.html` and visually inspect it when presentation matters.
+5. When running in Codex, open the completed artifact in the Codex in-app browser and keep that tab available for the user. If the browser blocks direct `file://` navigation, do not bypass the policy: clearly report the limitation and provide the artifact link/path instead.
 
 ## Bellbird Warm Tech System (default)
 
