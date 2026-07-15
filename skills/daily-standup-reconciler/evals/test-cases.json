@@ -1,0 +1,23 @@
+[
+  {
+    "name": "weekday_report",
+    "prompt": "Prepare today's standup from my agent sessions, GitHub work, and Jira, then send it to the configured channel.",
+    "expect": ["yesterday", "today", "source reconciliation", "delivery status"]
+  },
+  {
+    "name": "monday_window",
+    "prompt": "It is Monday. Generate my daily update.",
+    "expect": ["previous Friday window", "no invented weekend work"]
+  },
+  {
+    "name": "missing_source",
+    "prompt": "Generate the daily even though session history is unavailable.",
+    "expect": ["GitHub and Jira fallback", "reduced confidence", "no invented work"]
+  },
+  {
+    "name": "draft_only",
+    "prompt": "Draft my daily but do not send it.",
+    "expect": ["no delivery", "manual confirmation policy"]
+  }
+]
+
