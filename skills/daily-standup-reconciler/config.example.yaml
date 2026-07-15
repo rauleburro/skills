@@ -25,6 +25,7 @@ delivery:
   provider: "YOUR_MESSAGING_PROVIDER"
   destination_type: "channel_or_chat"
   destination_name: "YOUR_DESTINATION"
+  content_format: "html"
   scheduled_run_auto_send: false
   manual_run_requires_confirmation: true
 
@@ -33,4 +34,3 @@ output:
   headings: ["yesterday", "today"]
   voice: "first_person_singular"
   max_bullets_per_section: 6
-

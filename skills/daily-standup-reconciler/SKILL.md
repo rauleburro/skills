@@ -62,10 +62,10 @@ Follow the configured delivery policy:
 - Scheduled runs may auto-send only when explicitly enabled in local configuration.
 - Manual runs require confirmation unless the user explicitly asked to send.
 - Resolve the exact destination before writing.
+- Use the configured content format. For Microsoft Teams HTML, send through the connector's HTML field and use Teams-safe semantic tags rather than raw Markdown.
 - Send only the standup; keep source diagnostics local.
 - If delivery fails, preserve the draft and report the blocker without claiming success.
 
 ## Local completion response
 
 Return the final standup, counts of inspected sessions/commits/PRs/issues, delivery status, and any unavailable source that reduced confidence.
-
