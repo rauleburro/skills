@@ -10,6 +10,7 @@ Maintained by [@rauleburro](https://github.com/rauleburro).
 
 | Skill | Description | Install command |
 |-------|-------------|-----------------|
+| [`warp-session`](./skills/warp-session) | Opens a new AI-agent session (claude, codex, opencode, or pi) in the Warp terminal — as a tab, split pane, or window — with an initial prompt and working directory. Harness-agnostic: a bundled bash script does all the work via Warp Tab Configs + the `warp://` URI scheme. | `npx skills add rauleburro/skills@warp-session` |
 | [`apple-mail`](./skills/apple-mail) | Send, read, search, reply to, archive, and delete emails through Apple Mail on macOS. Supports attachments and requires explicit user confirmation before destructive or outbound actions. | `npx skills add rauleburro/skills@apple-mail` |
 | [`daily-standup-reconciler`](./skills/daily-standup-reconciler) | Generates evidence-based daily standups by reconciling agent sessions, GitHub activity, and Jira, then optionally delivers them through a configured messaging destination. Portable across Codex, Claude Code, and open-source Agent Skills runtimes. | `npx skills add rauleburro/skills@daily-standup-reconciler` |
 | [`research`](./skills/research) | Focused technical deep-dive using 3 parallel agents (codebase + web). Produces a consolidated report and persistent notes with minimal token overhead. | `npx skills add rauleburro/skills@research` |
