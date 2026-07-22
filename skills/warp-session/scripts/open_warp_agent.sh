@@ -119,7 +119,7 @@ fi
 cat > "$RUNNER" <<EOF
 #!/usr/bin/env bash
 cd '$CWD' || exit 1
-exec $AGENT_CMD
+$AGENT_CMD
 EOF
 chmod +x "$RUNNER"
 
