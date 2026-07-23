@@ -57,10 +57,22 @@ mkdir -p "$RUN_DIR"
 # The diff under review: merge-base..HEAD (what this branch adds on top of base).
 git diff "$MERGE_BASE" HEAD > "$RUN_DIR/diff.patch"
 
-# LOC stats from numstat (binary files report '-' and are skipped).
-read -r FILES ADDED REMOVED <<<"$(git diff --numstat "$MERGE_BASE" HEAD | awk '
+# Total LOC stats from numstat (binary files report '-' and are skipped).
+NUMSTAT="$(git diff --numstat "$MERGE_BASE" HEAD)"
+read -r FILES ADDED REMOVED <<<"$(printf '%s\n' "$NUMSTAT" | awk '
   $1 != "-" { a += $1 } $2 != "-" { r += $2 } { f += 1 }
   END { printf "%d %d %d", f, a, r }')"
+
+# Size-budget stats count only production application code.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP_STATS="$(printf '%s\n' "$NUMSTAT" | python3 "$SCRIPT_DIR/classify_app_loc.py")"
+read -r APP_FILES APP_ADDED APP_REMOVED EXCLUDED_FILES EXCLUDED_ADDED EXCLUDED_REMOVED \
+  <<<"$(printf '%s' "$APP_STATS" | python3 -c '
+import json, sys
+s = json.load(sys.stdin)
+print(s["app_changed_files"], s["app_added_loc"], s["app_removed_loc"],
+      s["excluded_changed_files"], s["excluded_added_loc"], s["excluded_removed_loc"])
+')"
 
 # Escape the title for JSON.
 TITLE_JSON="$(printf '%s' "$TITLE" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))' 2>/dev/null || printf '"%s"' "$TITLE")"
@@ -75,7 +87,14 @@ cat > "$RUN_DIR/meta.json" <<EOF
   "merge_base": "${MERGE_BASE}",
   "changed_files": ${FILES},
   "added_loc": ${ADDED},
-  "removed_loc": ${REMOVED}
+  "removed_loc": ${REMOVED},
+  "loc_scope": "production_application_code",
+  "app_changed_files": ${APP_FILES},
+  "app_added_loc": ${APP_ADDED},
+  "app_removed_loc": ${APP_REMOVED},
+  "excluded_changed_files": ${EXCLUDED_FILES},
+  "excluded_added_loc": ${EXCLUDED_ADDED},
+  "excluded_removed_loc": ${EXCLUDED_REMOVED}
 }
 EOF
 

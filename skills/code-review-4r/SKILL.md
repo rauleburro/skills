@@ -39,10 +39,11 @@ Run `scripts/collect_diff.sh` to capture what to review:
   the branch is local and auto-commit works, then diffs.
 
 The script writes everything under `docs/code-review-4r/<id>/` (`<id>` = sanitized branch name, or
-`pr-<number>`): `diff.patch` and `meta.json` (title, base, head, changed files, added/removed LOC).
-Read `meta.json` — note the PR number (if any) for the final comment, and the LOC stats for the
-review context. Changed LOC and PR size are informational only and must never create a finding or
-affect the verdict.
+`pr-<number>`): `diff.patch` and `meta.json` (title, base, head, total diff stats, and production
+application LOC). Read `meta.json` — note the PR number (if any) for the final comment and use only
+`app_added_loc + app_removed_loc` for the rubric's size budget. Never use total LOC, tests,
+documentation, generated files, configuration, assets, dependencies, build output, or auxiliary
+content for a size finding.
 
 ### Repository merge-policy override
 

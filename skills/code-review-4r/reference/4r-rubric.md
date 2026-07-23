@@ -37,11 +37,20 @@ What happens when a dependency fails or is slow?
 - No graceful degradation: a non-critical dependency failure takes down the whole path → `major`.
 - No observability: a new failure path with no log/metric to diagnose it → `minor`.
 
-## PR size policy
+## Production application LOC budget
 
-PR size and changed LOC are unrestricted. Never create a finding from additions, deletions, changed
-file count, production LOC, test LOC, or documentation LOC. These numbers may be included as neutral
-context only and must not affect severity or approval.
+The ideal human review unit is **200–400 changed production application LOC**; **600 production
+application LOC is the hard ceiling**. Calculate the budget only from
+`app_added_loc + app_removed_loc` in `meta.json`:
+
+- 0–400 app LOC → no size finding.
+- 401–600 app LOC → one `minor` finding suggesting a split.
+- More than 600 app LOC → one `major` finding.
+
+The classifier must exclude tests, test fixtures/mocks/snapshots, documentation, examples,
+generated code, configuration and metadata, assets, dependencies/vendor code, migrations, build
+output, coverage output, and tooling/scripts. Total additions/deletions and excluded LOC may be
+reported as neutral context, but must never affect the size finding, severity, or verdict.
 
 ## Severity & verdict
 
@@ -58,7 +67,8 @@ context only and must not affect severity or approval.
 **Repository override:** when `meta.json` or the trusted repository policy declares
 `merge_policy: "coverage-only"`, 4R findings are advisory. In that mode `approved == true` when the
 mandatory exact-head tests/coverage gate passed, and `approved == false` only when that gate is
-missing or failed. Never use advisory 4R findings or changed LOC to reject a coverage-only PR.
+missing or failed. Never use advisory 4R findings or production application LOC to reject a
+coverage-only PR.
 
 ## verdict.json contract
 Emit exactly this shape (the orchestrator reads only this file to decide the loop):

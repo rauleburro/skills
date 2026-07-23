@@ -9,22 +9,21 @@ class LocPolicyTests(unittest.TestCase):
     def read(self, relative_path):
         return (SKILL_ROOT / relative_path).read_text(encoding="utf-8")
 
-    def test_rubric_makes_loc_informational_only(self):
+    def test_rubric_budgets_only_production_application_loc(self):
         rubric = self.read("reference/4r-rubric.md")
 
-        self.assertIn("PR size and changed LOC are unrestricted", rubric)
-        self.assertIn("must not affect severity or approval", rubric)
-        self.assertNotIn("200–400", rubric)
-        self.assertNotIn("hard ceiling", rubric)
+        self.assertIn("200–400 changed production application LOC", rubric)
+        self.assertIn("600 production", rubric)
+        self.assertIn("app_added_loc + app_removed_loc", rubric)
+        self.assertIn("Total additions/deletions and excluded LOC", rubric)
 
-    def test_agent_prompts_do_not_enforce_a_size_budget(self):
+    def test_agent_prompts_exclude_tests_docs_and_auxiliary_content(self):
         reviewer = self.read("reference/reviewer-agent.md")
         implementer = self.read("reference/implementer-agent.md")
 
-        self.assertIn("never create a finding based on size", reviewer)
-        self.assertNotIn("size-budget check", reviewer)
-        self.assertNotIn("Size budget", reviewer)
-        self.assertNotIn("size budget", implementer)
+        self.assertIn("Use only `app_added_loc + app_removed_loc`", reviewer)
+        self.assertIn("Never", reviewer)
+        self.assertIn("Tests required to prove the fix do not consume that budget", implementer)
 
     def test_coverage_only_override_is_report_only(self):
         skill = self.read("SKILL.md")
