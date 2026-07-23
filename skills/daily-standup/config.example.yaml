@@ -1,0 +1,84 @@
+# Configuración del skill daily-standup.
+#
+# Copiá este archivo a ~/.daily-standup/config.yaml y completá los valores.
+# El skill `daily-standup-setup` puede generarlo por vos de forma interactiva.
+#
+# Nunca pongas tokens ni secretos aquí: van en el gestor de secretos del runtime
+# o en variables de entorno. Este archivo solo describe identidad y preferencias.
+version: 2
+
+identity:
+  display_name: "TU_NOMBRE"          # nombre para la voz en primera persona
+  github_login: "TU_LOGIN_GITHUB"    # `gh api user --jq .login`
+  email: "tu@correo.com"             # para cruzar mail y calendario
+  issue_tracker_user: "currentUser()" # usuario en el tracker (o su id)
+
+time:
+  timezone: "America/Argentina/Buenos_Aires"  # zona para todos los límites del reporte
+  schedule:
+    weekdays: [monday, tuesday, wednesday, thursday, friday]
+    local_time: "09:00"
+  monday_uses_previous_friday: true   # el lunes, "yesterday" cubre el viernes y el finde
+
+scope:
+  exclude_personal_topics: true       # lo personal solo va en la nota privada, no al canal
+
+# --- FUENTES DE EVIDENCIA (todas degradan con elegancia si no están disponibles) ---
+sources:
+  agent_sessions:
+    enabled: true
+    # transcripts de agentes de código; se leen objetivo + resultado, nunca prompts crudos
+    paths: ["~/.claude/projects", "~/.codex/sessions"]
+
+  git:
+    enabled: true
+    roots: ["~/Develop"]              # carpetas donde buscar repos (.git)
+    author_match: "TU_NOMBRE"         # matchea %an; usá el primer nombre para cubrir acentos
+
+  github:
+    enabled: true
+    organization: "TU_ORG"            # dejar vacío para incluir todos los repos del usuario
+
+  issue_tracker:
+    enabled: true
+    provider: "jira"                  # jira | roadmap | linear | none
+    site: "TU_SITE"                   # sitio/host del tracker
+    read_only: true                   # NUNCA mutar issues/comentarios/asignaciones
+    prefer_active_sprint_parent_issues: true
+
+  messaging:
+    enabled: true
+    provider: "slack"                 # slack | teams | none
+    read_own_messages: true           # leer mis mensajes como evidencia de trabajo/decisiones
+    channels: ["#daily", "#dev"]      # canales a revisar (mensajes propios en la ventana)
+
+  mail:
+    enabled: true
+    provider: "apple_mail"            # apple_mail | gmail | none
+    only_sent_by_me: true             # evidencia = correos que envié en la ventana
+
+  calendar:
+    enabled: true
+    provider: "apple_calendar"        # apple_calendar | google_calendar | none
+    # el calendario informa bloqueos de agenda de HOY; lo personal no va al canal
+
+# --- ENTREGA ---
+delivery:
+  provider: "slack"                   # slack | teams | none (none = solo borrador)
+  destination_type: "channel"         # channel | chat | dm
+  destination_name: "#daily"
+  content_format: "markdown"          # markdown | html (Teams prefiere html semántico)
+  scheduled_run_auto_send: false      # las corridas agendadas solo auto-envían si esto es true
+  manual_run_requires_confirmation: true
+
+# --- HISTÓRICO Y RECONCILIACIÓN DE COMPROMISOS ---
+history:
+  enabled: true
+  db_path: "~/.daily-standup/history.db"  # SQLite: reportes + compromisos
+
+# --- SALIDA ---
+output:
+  language: "es"                      # es | en | ...
+  headings: ["yesterday", "today"]    # el equipo usa estos títulos aunque el cuerpo sea en es
+  voice: "first_person_singular"
+  max_bullets_per_section: 6

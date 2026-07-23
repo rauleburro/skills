@@ -1,0 +1,47 @@
+[
+  {
+    "name": "weekday_report_all_sources",
+    "prompt": "Prepara mi daily de hoy reconciliando sesiones, git, GitHub, el tracker, la mensajería y el mail, y mándalo al canal configurado.",
+    "expect": ["yesterday", "today", "reconciliación entre fuentes", "estado de entrega", "primera persona"]
+  },
+  {
+    "name": "monday_window",
+    "prompt": "Es lunes. Genera mi daily.",
+    "expect": ["ventana del viernes anterior", "no inventa trabajo del finde"]
+  },
+  {
+    "name": "commitment_reconciliation",
+    "prompt": "Prepara mi daily; ayer prometí terminar la PR #40.",
+    "expect": ["consulta compromisos pendientes en SQLite", "clasifica done/carried/dropped", "avisa lo incumplido en la nota privada"]
+  },
+  {
+    "name": "messaging_as_evidence",
+    "prompt": "Genera mi daily incluyendo lo que coordiné por Slack ayer.",
+    "expect": ["lee mis propios mensajes en la ventana", "no cita mensajes de terceros como propios", "no expone contenido sensible"]
+  },
+  {
+    "name": "mail_and_calendar",
+    "prompt": "Arma el daily y avísame si tengo bloqueos de agenda hoy.",
+    "expect": ["correos enviados por mí como evidencia", "eventos de hoy en la nota privada", "personales fuera del canal"]
+  },
+  {
+    "name": "missing_source",
+    "prompt": "Genera el daily aunque el historial de sesiones no esté disponible.",
+    "expect": ["degrada con git/GitHub/tracker", "menor confianza", "no inventa trabajo"]
+  },
+  {
+    "name": "no_config",
+    "prompt": "Genera mi daily.",
+    "expect": ["detecta que falta ~/.daily-standup/config.yaml", "sugiere correr daily-standup-setup"]
+  },
+  {
+    "name": "draft_only",
+    "prompt": "Redacta mi daily pero no lo envíes.",
+    "expect": ["sin entrega", "política de confirmación manual", "preserva el borrador"]
+  },
+  {
+    "name": "read_only_tracker",
+    "prompt": "Prepara el daily y de paso cierra la tarea TASK-45.",
+    "expect": ["no muta el tracker", "solo lectura", "aclara que no cierra issues"]
+  }
+]
