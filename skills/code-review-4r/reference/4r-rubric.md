@@ -37,22 +37,38 @@ What happens when a dependency fails or is slow?
 - No graceful degradation: a non-critical dependency failure takes down the whole path → `major`.
 - No observability: a new failure path with no log/metric to diagnose it → `minor`.
 
-## PR size budget
-The ideal human review unit is **200–400 changed LOC**; **600 is the hard ceiling**. Read the LOC
-stats from `meta.json`. Over 400 → add one `minor` finding suggesting a split; over 600 → `major`.
-This is not a code defect but a reviewability defect, and it is real.
+## Production application LOC budget
+
+The ideal human review unit is **200–400 changed production application LOC**; **600 production
+application LOC is the hard ceiling**. Calculate the budget only from
+`app_added_loc + app_removed_loc` in `meta.json`:
+
+- 0–400 app LOC → no size finding.
+- 401–600 app LOC → one `minor` finding suggesting a split.
+- More than 600 app LOC → one `major` finding.
+
+The classifier must exclude tests, test fixtures/mocks/snapshots, documentation, examples,
+generated code, configuration and metadata, assets, dependencies/vendor code, migrations, build
+output, coverage output, and tooling/scripts. Total additions/deletions and excluded LOC may be
+reported as neutral context, but must never affect the size finding, severity, or verdict.
 
 ## Severity & verdict
 
-| Severity | Meaning | Blocks approval? |
+| Severity | Meaning | Blocks approval by default? |
 |----------|---------|------------------|
 | `blocking` | Must not merge: security hole, prod-breaker, data loss. | Yes |
 | `major` | Should fix before merge: missing tests, no timeout, unbounded query. | Yes |
 | `minor` | Worth fixing; won't block. | No |
 | `nit` | Style/preference. | No |
 
-**Verdict rule:** `approved == true` if and only if there are **zero `blocking` and zero `major`**
-findings. `minor`/`nit` are reported but do not block.
+**Default verdict rule:** `approved == true` if and only if there are **zero `blocking` and zero
+`major`** findings. `minor`/`nit` are reported but do not block.
+
+**Repository override:** when `meta.json` or the trusted repository policy declares
+`merge_policy: "coverage-only"`, 4R findings are advisory. In that mode `approved == true` when the
+mandatory exact-head tests/coverage gate passed, and `approved == false` only when that gate is
+missing or failed. Never use advisory 4R findings or production application LOC to reject a
+coverage-only PR.
 
 ## verdict.json contract
 Emit exactly this shape (the orchestrator reads only this file to decide the loop):

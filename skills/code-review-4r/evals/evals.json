@@ -30,7 +30,7 @@
     { "query": "can you look over the diff I just pushed and fix any timeout/retry issues you find?", "should_trigger": true },
     { "query": "do a thorough review of pr 88, loop until it's clean", "should_trigger": true },
     { "query": "open a PR for my current branch against develop", "should_trigger": false },
-    { "query": "explain what the 4R framework is and why 200-400 lines is the ideal PR size", "should_trigger": false },
+    { "query": "explain why 4R counts production code LOC but excludes tests and docs", "should_trigger": false },
     { "query": "review my essay draft for clarity and tone", "should_trigger": false },
     { "query": "what does this regex do and is it efficient?", "should_trigger": false },
     { "query": "write unit tests for the search() function", "should_trigger": false },

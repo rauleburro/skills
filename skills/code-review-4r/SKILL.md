@@ -39,9 +39,24 @@ Run `scripts/collect_diff.sh` to capture what to review:
   the branch is local and auto-commit works, then diffs.
 
 The script writes everything under `docs/code-review-4r/<id>/` (`<id>` = sanitized branch name, or
-`pr-<number>`): `diff.patch` and `meta.json` (title, base, head, changed files, added/removed LOC).
-Read `meta.json` — note the PR number (if any) for the final comment, and the LOC stats for the
-size-budget check in the rubric.
+`pr-<number>`): `diff.patch` and `meta.json` (title, base, head, total diff stats, and production
+application LOC). Read `meta.json` — note the PR number (if any) for the final comment and use only
+`app_added_loc + app_removed_loc` for the rubric's size budget. Never use total LOC, tests,
+documentation, generated files, configuration, assets, dependencies, build output, or auxiliary
+content for a size finding.
+
+### Repository merge-policy override
+
+Before starting the loop, inspect the repository's trusted review policy when present (for example
+`.github/codex/prompts/code-review-4r.md`). If it explicitly declares the exact-head tests/coverage
+quality gate as the only mandatory merge gate:
+
+- record `merge_policy: "coverage-only"` and the exact-head quality-gate evidence in `meta.json`;
+- run a single report-only review — do not enter Plan/Implement, modify files, or auto-commit;
+- keep 4R findings as advisory;
+- mark the PR approved when that exact-head quality gate passed, even when advisory P0/P1 or
+  blocking/major findings are reported;
+- request changes only when the mandatory test/coverage gate is missing or failed.
 
 Set `MAX_ITERATIONS=4`. The loop is bounded so a non-converging review can never run forever.
 
@@ -53,6 +68,7 @@ For iteration `N` (starting at 1), spawn one subagent with the **Agent tool**, `
 
 - the diff: `docs/code-review-4r/<id>/diff.patch`
 - the rubric: `<skill-dir>/reference/4r-rubric.md`
+- the repository review policy, when present
 - where to write: `docs/code-review-4r/<id>/iteration-<N>/review.md` and `.../verdict.json`
 
 When it returns, **read only `verdict.json`** — not `review.md`. Keeping the reviewer's prose out of
@@ -67,6 +83,8 @@ your context is what makes the next review independent.
 
 ## 2. Gate
 
+- `merge_policy == "coverage-only"` → do not run Plan/Implement. Finalize after the single
+  report-only review; exact-head quality-gate status controls approval.
 - `approved == true` (no `blocking` or `major` findings remain) → go to **Finalize** (§5).
 - Otherwise, if `N == MAX_ITERATIONS` → go to **Finalize** and clearly mark the unresolved findings
   as residual (do not loop past the cap).
