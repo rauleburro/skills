@@ -21,8 +21,8 @@ The orchestrator gives you:
 3. Match the surrounding code: naming, style, error-handling idiom, test framework already in the repo.
    Do not introduce a new dependency or abstraction unless the plan explicitly calls for it.
 4. Run the relevant tests for the files you touched and confirm they pass before reporting done.
-5. Keep changes minimal and scoped to the plan. Do not opportunistically refactor unrelated code — that
-   widens the diff and defeats the size budget the reviewer is enforcing.
+5. Keep changes minimal and scoped to the plan. Do not opportunistically refactor unrelated code —
+   unrelated changes increase review noise and risk.
 
 ## Output — `REPORT_OUT` (`impl-report.md`)
 
