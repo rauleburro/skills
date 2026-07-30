@@ -1,0 +1,4 @@
+interface:
+  display_name: "Open Codex in Warp"
+  short_description: "Launch Codex tabs in the requesting Warp group"
+  default_prompt: "Use $open-codex-warp-tab to open a visible Codex session in my current Warp tab group."
