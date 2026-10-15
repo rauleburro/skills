@@ -22,6 +22,7 @@ Maintained by [@rauleburro](https://github.com/rauleburro).
 | [`jira-task-workflow`](./skills/jira-task-workflow) | Complete workflow to implement a single Jira ticket: fetches it, analyzes code/docs, draws ASCII architecture diagrams, discusses the approach interactively, plans, implements, and verifies 80%+ test coverage. | `npx skills add rauleburro/skills@jira-task-workflow` |
 | [`epic-plan-executor`](./skills/epic-plan-executor) | Executes multi-story Jira implementation plans (epics) in structured phases. Coordinates sequential and parallel work, manages Jira transitions, creates per-story branches, merges at the end, and validates with lint/test/build. | `npx skills add rauleburro/skills@epic-plan-executor` |
 | [`feature-flow-auditor`](./skills/feature-flow-auditor) | Analyzes a feature or module end-to-end with parallel subagents, source-code introspection, Mermaid/UML diagrams, and an independent critical audit. Maps flows across models/views/controllers/APIs/jobs/integrations. | `npx skills add rauleburro/skills@feature-flow-auditor` |
+| [`consejo`](./skills/consejo) | Puts one question to a council of 5 independent, read-only counsellors — 3 clean-context Claude (Opus) agents with different stances and 2 Codex counsellors in adversarial mode — and follows the majority vote. Falls back to the 3 Claude counsellors when Codex is unavailable; a tie escalates to the caller. | `npx skills add rauleburro/skills@consejo` |
 
 ---
 
